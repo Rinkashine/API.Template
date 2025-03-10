@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Template.Domain.DTO
 {
-    public class AddCategoryRequestDTO
+    public class AddCategoryRequestDto
     {
         [Required]
         [MinLength(4)]

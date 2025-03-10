@@ -9,8 +9,6 @@ namespace Template.Domain.DTO
 {
     public class UpdateCategoryRequestDto
     {
-        [Key]
-        public Guid Id { get; set; }
         [Required]
         [MinLength(4)]
         [MaxLength(50)]

@@ -9,8 +9,8 @@ namespace API.Template.Mapping
         public AutoMapperProfiles()
         {
             //Category
-            CreateMap<Category, CategoryDTO>().ReverseMap();
-            CreateMap<AddCategoryRequestDTO, Category>().ReverseMap();
+            CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<AddCategoryRequestDto, Category>().ReverseMap();
             CreateMap<UpdateCategoryRequestDto, Category>().ReverseMap();
 
         }

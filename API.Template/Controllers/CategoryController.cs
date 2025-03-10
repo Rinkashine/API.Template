@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using API.Template.CustomActionFilters;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Template.Application.Interfaces;
 using Template.Domain.DTO;
 using Template.Domain.Entities;
+using Template.Infastructure.Migrations;
 using Template.Infastructure.Repository;
 
 namespace API.Template.Controllers
@@ -26,7 +28,7 @@ namespace API.Template.Controllers
             //Get Data From Database
             List<Category> categories = await _categoryRepository.GetAllAsync();
             //Return DTO
-            return Ok(_mapper.Map<List<CategoryDTO>>(categories));
+            return Ok(_mapper.Map<List<CategoryDto>>(categories));
         }
         [HttpGet]
         [Route("{id:Guid}")]
@@ -38,31 +40,48 @@ namespace API.Template.Controllers
                 return NotFound();
             }
             //Return Dto
-            return Ok(_mapper.Map<CategoryDTO>(category));
+            return Ok(_mapper.Map<CategoryDto>(category));
         }
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AddCategoryRequestDTO obj)
+        [ValidateModel]
+        public async Task<IActionResult> Create([FromBody] AddCategoryRequestDto addCategoryRequestDTO)
         {
-            if(ModelState.IsValid)
-            {
-                Category category = new Category
-                {
-                    Name = obj.Name,
-                };
-                await _categoryRepository.CreateAsync(category);
+            //Map or Convert DTO to Domain Model
+            var categoryDomain = _mapper.Map<Category>(addCategoryRequestDTO);
+            //Use Domain Model to Create Region
+            await _categoryRepository.CreateAsync(categoryDomain);
+            //Map Domain model back to DTO
+            var walkDto = _mapper.Map<AddCategoryRequestDto>(categoryDomain);
 
-
-                AddCategoryRequestDTO addCategoryRequestDTO = new AddCategoryRequestDTO
-                {
-                    Name = category.Name,
-                };
-
-
-                return Ok(addCategoryRequestDTO);
-            }
-
-            return BadRequest(ModelState);
-
+            return Ok(walkDto);
         }
+        [HttpPut]
+        [ValidateModel]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
+        {
+            //Map or Convert DTO to Domain Model
+            var categoryDomain = _mapper.Map<Category>(updateCategoryRequestDto);
+            //Use Domain Model to Create Region
+            await _categoryRepository.UpdateAsync(categoryDomain, id);
+            //Map Domain model back to Dto
+            var categoryDto = _mapper.Map<UpdateCategoryRequestDto>(categoryDomain);
+
+            return Ok(categoryDto);
+        }
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            //Delete Category
+            var categoryDomain = await _categoryRepository.DeleteAsync(id);
+            if (categoryDomain is null)
+            {
+                return NotFound();
+            }
+            //return deleted region back optional
+            return Ok(_mapper.Map<CategoryDto>(categoryDomain));
+        }
+        
     }
 }

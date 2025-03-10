@@ -17,12 +17,22 @@ namespace Template.Infastructure.Repository
         {
             _db = db;
         }
+
+        public async Task<List<Category>> GetAllAsync()
+        {
+            return await _db.Categories.ToListAsync();
+        }
+
+        public async Task<Category?> GetByIdAsync(Guid id)
+        {
+            return await _db.Categories.FirstOrDefaultAsync(i => i.Id == id);
+        }
+
         public async Task<Category> CreateAsync(Category obj)
         {
             await _db.Categories.AddAsync(obj);
             await _db.SaveChangesAsync();
             return obj;
-            
         }
 
         public async Task<Category?> DeleteAsync(Guid id)
@@ -37,6 +47,8 @@ namespace Template.Infastructure.Repository
             await _db.SaveChangesAsync();
             return categories;
         }
+
+       
 
         public async Task<Category?> UpdateAsync(Category obj, Guid id)
         {

@@ -12,7 +12,10 @@ namespace API.Template.Mapping
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<AddCategoryRequestDto, Category>().ReverseMap();
             CreateMap<UpdateCategoryRequestDto, Category>().ReverseMap();
-
+            //Product
+            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<AddProductRequestDto, Product>().ReverseMap();
+            CreateMap<UpdateProductDto, Product>().ReverseMap();
         }
        
     }

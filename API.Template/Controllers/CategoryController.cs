@@ -51,9 +51,9 @@ namespace API.Template.Controllers
             //Use Domain Model to Create Region
             await _categoryRepository.CreateAsync(categoryDomain);
             //Map Domain model back to DTO
-            var walkDto = _mapper.Map<AddCategoryRequestDto>(categoryDomain);
+            var categoryDto = _mapper.Map<AddCategoryRequestDto>(categoryDomain);
 
-            return Ok(walkDto);
+            return Ok(categoryDto);
         }
         [HttpPut]
         [ValidateModel]

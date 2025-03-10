@@ -57,6 +57,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 //Register Repository
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 //Auto Mapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 

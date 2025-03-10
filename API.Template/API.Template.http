@@ -1,6 +1,10 @@
-@API.Template_HostAddress = http://localhost:5295
+@API.Template_HostAddress = https://localhost:7216
 
 GET {{API.Template_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+GET {{API.Template_HostAddress}}/api/category
 
 ###

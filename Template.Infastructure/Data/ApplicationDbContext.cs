@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Template.Domain.Entities;
 
 namespace Template.Application.Data
 {
@@ -15,6 +16,8 @@ namespace Template.Application.Data
         {
             
         }
+
+        public DbSet<Category> Categories { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

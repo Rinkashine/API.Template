@@ -22,6 +22,26 @@ namespace Template.Application.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            //Generate Admin Role Id
+            var adminRoleId = "1a0514f0-8dae-457a-bf89-2b9ebc5bd0b9";
+            var userRoleId = "8afc3fa6-320a-474d-b767-63c00e769768";
+            var roles = new List<IdentityRole>
+            {
+                new IdentityRole
+                {
+                    Id = adminRoleId,
+                    ConcurrencyStamp = adminRoleId,
+                    Name = "Admin",
+                    NormalizedName = "Admin".ToUpper()
+                },new IdentityRole
+                {
+                    Id = userRoleId,
+                    ConcurrencyStamp = userRoleId,
+                    Name = "User",
+                    NormalizedName = "User".ToUpper()
+                }
+            };
+            builder.Entity<IdentityRole>().HasData(roles);
 
         }
 

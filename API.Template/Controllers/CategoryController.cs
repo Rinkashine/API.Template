@@ -1,5 +1,6 @@
 ﻿using API.Template.CustomActionFilters;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Template.Application.Interfaces;
@@ -12,6 +13,7 @@ namespace API.Template.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
@@ -23,6 +25,7 @@ namespace API.Template.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> GetAll()
         {
             //Get Data From Database
@@ -32,6 +35,7 @@ namespace API.Template.Controllers
         }
         [HttpGet]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             Category? category = await _categoryRepository.GetByIdAsync(id);
@@ -44,6 +48,7 @@ namespace API.Template.Controllers
         }
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] AddCategoryRequestDto addCategoryRequestDTO)
         {
             //Map or Convert DTO to Domain Model
@@ -58,6 +63,7 @@ namespace API.Template.Controllers
         [HttpPut]
         [ValidateModel]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
         {
             //Map or Convert DTO to Domain Model
@@ -71,6 +77,7 @@ namespace API.Template.Controllers
         }
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             //Delete Category

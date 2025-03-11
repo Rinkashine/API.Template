@@ -1,5 +1,6 @@
 ﻿using API.Template.CustomActionFilters;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Template.Application.Interfaces;
@@ -21,6 +22,8 @@ namespace API.Template.Controllers
         }
         //Get All Walk
         [HttpGet]
+        [Authorize(Roles = "Admin,User")]
+
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
             [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
             [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
@@ -32,6 +35,7 @@ namespace API.Template.Controllers
             return Ok(_mapper.Map<List<ProductDto>>(walk));
         }
         [HttpGet("{id:Guid}")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> GetById([FromRoute] Guid Id) 
         {
             Product? product = await _productRepository.GetByIdAsync(Id);
@@ -43,6 +47,7 @@ namespace API.Template.Controllers
         }
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] AddProductRequestDto addProductRequestDto) 
         {
             //Convert DTO to Domain Model
@@ -57,6 +62,7 @@ namespace API.Template.Controllers
         [HttpPut]
         [Route("{id:Guid}")]
         [ValidateModel]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProductDto updateProductDto)
         {
             //Map Dto to Domain
@@ -75,6 +81,7 @@ namespace API.Template.Controllers
 
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             //Check if Walk exists
